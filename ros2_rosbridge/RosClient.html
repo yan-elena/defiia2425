@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module RosClient</title>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title">RosClient</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:/home/fabien.badeig/Code/defiia/python/ros2_rosbridge/RosClient.py">/home/fabien.badeig/Code/defiia/python/ros2_rosbridge/RosClient.py</a></td></tr></table>
+    <p><span class="code">#&nbsp;Authors:&nbsp;Badeig</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="json.html">json</a><br>
+</td><td class="multicolumn"><a href="threading.html">threading</a><br>
+</td><td class="multicolumn"><a href="time.html">time</a><br>
+</td><td class="multicolumn"><a href="websocket.html">websocket</a><br>
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
+    
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl>
+<dt class="heading-text"><a href="builtins.html#object">builtins.object</a>
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="RosClient.html#RosClient">RosClient</a>
+</dt></dl>
+</dd>
+</dl>
+ <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="RosClient">class <strong>RosClient</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#RosClient">RosClient</a>(ip,&nbsp;port)<br>
+&nbsp;<br>
+class&nbsp;<a href="#RosClient">RosClient</a>&nbsp;provides&nbsp;a&nbsp;simple&nbsp;API&nbsp;to&nbsp;interact&nbsp;with&nbsp;ROS2&nbsp;environment&nbsp;throught&nbsp;the&nbsp;websocket&nbsp;rosbridge<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="RosClient-__init__"><strong>__init__</strong></a>(self, ip, port)</dt><dd><span class="code">Contruct&nbsp;an&nbsp;<a href="builtins.html#object">object</a>&nbsp;<a href="#RosClient">RosClient</a><br>
+:param&nbsp;self:<br>
+:param&nbsp;ip:&nbsp;the&nbsp;IP&nbsp;of&nbsp;the&nbsp;rosbridge<br>
+:type&nbsp;ip:&nbsp;str<br>
+:param&nbsp;port:&nbsp;the&nbsp;port&nbsp;of&nbsp;the&nbsp;rosbridge<br>
+:type&nbsp;port:&nbsp;int<br>
+:return:</span></dd></dl>
+
+<dl><dt><a name="RosClient-advertise"><strong>advertise</strong></a>(self, topic, type)</dt><dd><span class="code">Declaration&nbsp;of&nbsp;intent&nbsp;to&nbsp;interact&nbsp;on&nbsp;a&nbsp;specific&nbsp;topic&nbsp;on&nbsp;ros<br>
+:param&nbsp;self:<br>
+:param&nbsp;topic:&nbsp;the&nbsp;topic&nbsp;on&nbsp;ros<br>
+:type&nbsp;str:<br>
+:param&nbsp;type:&nbsp;the&nbsp;message&nbsp;to&nbsp;publish<br>
+:type&nbsp;str:<br>
+:return:</span></dd></dl>
+
+<dl><dt><a name="RosClient-call_service"><strong>call_service</strong></a>(self, name, args=None)</dt><dd><span class="code">process&nbsp;to&nbsp;manage&nbsp;subscriptions&nbsp;to&nbsp;receive&nbsp;the&nbsp;messages<br>
+Update&nbsp;the&nbsp;message&nbsp;box&nbsp;of&nbsp;the&nbsp;client<br>
+:param&nbsp;self:<br>
+:param&nbsp;name:&nbsp;the&nbsp;name&nbsp;of&nbsp;the&nbsp;service<br>
+:type&nbsp;str:<br>
+:param&nbsp;args:&nbsp;the&nbsp;list&nbsp;of&nbsp;parameters&nbsp;to&nbsp;run&nbsp;the&nbsp;service<br>
+:type&nbsp;list:<br>
+:return:</span></dd></dl>
+
+<dl><dt><a name="RosClient-connect"><strong>connect</strong></a>(self)</dt><dd><span class="code">Connect&nbsp;to&nbsp;the&nbsp;rosbridge&nbsp;and&nbsp;launch&nbsp;in&nbsp;detached&nbsp;process&nbsp;the&nbsp;subscription&nbsp;management&nbsp;to&nbsp;receive&nbsp;the&nbsp;messages<br>
+:param&nbsp;self:<br>
+:return:</span></dd></dl>
+
+<dl><dt><a name="RosClient-disconnect"><strong>disconnect</strong></a>(self)</dt><dd><span class="code">Wait&nbsp;the&nbsp;end&nbsp;of&nbsp;services&nbsp;calls,&nbsp;unsubscribe&nbsp;to&nbsp;record&nbsp;topics&nbsp;and&nbsp;disconnect&nbsp;from&nbsp;rosbridge<br>
+:param&nbsp;self:<br>
+:return:</span></dd></dl>
+
+<dl><dt><a name="RosClient-getNodes"><strong>getNodes</strong></a>(self)</dt><dd><span class="code">Request&nbsp;a&nbsp;specific&nbsp;API&nbsp;of&nbsp;rosbridge&nbsp;to&nbsp;get&nbsp;the&nbsp;list&nbsp;of&nbsp;existing&nbsp;nodes&nbsp;&nbsp;on&nbsp;ROS&nbsp;environment<br>
+:param&nbsp;self:<br>
+:return:</span></dd></dl>
+
+<dl><dt><a name="RosClient-getServices"><strong>getServices</strong></a>(self)</dt><dd><span class="code">Request&nbsp;a&nbsp;specific&nbsp;API&nbsp;of&nbsp;rosbridge&nbsp;to&nbsp;get&nbsp;the&nbsp;list&nbsp;of&nbsp;existing&nbsp;services&nbsp;on&nbsp;ROS&nbsp;environment<br>
+:param&nbsp;self:<br>
+:return:</span></dd></dl>
+
+<dl><dt><a name="RosClient-getTopics"><strong>getTopics</strong></a>(self)</dt><dd><span class="code">Request&nbsp;a&nbsp;specific&nbsp;API&nbsp;of&nbsp;rosbridge&nbsp;to&nbsp;get&nbsp;the&nbsp;list&nbsp;of&nbsp;existing&nbsp;topics&nbsp;on&nbsp;ROS&nbsp;environment<br>
+:param&nbsp;self:<br>
+:return:</span></dd></dl>
+
+<dl><dt><a name="RosClient-on_listen"><strong>on_listen</strong></a>(self)</dt><dd><span class="code">process&nbsp;to&nbsp;manage&nbsp;subscriptions&nbsp;to&nbsp;receive&nbsp;the&nbsp;messages<br>
+Update&nbsp;the&nbsp;message&nbsp;box&nbsp;of&nbsp;the&nbsp;client<br>
+:param&nbsp;self:<br>
+:return:</span></dd></dl>
+
+<dl><dt><a name="RosClient-publish"><strong>publish</strong></a>(self, topic, value)</dt><dd><span class="code">process&nbsp;to&nbsp;manage&nbsp;subscriptions&nbsp;to&nbsp;receive&nbsp;the&nbsp;messages<br>
+Update&nbsp;the&nbsp;message&nbsp;box&nbsp;of&nbsp;the&nbsp;client<br>
+:param&nbsp;self:<br>
+:param&nbsp;topic:&nbsp;the&nbsp;topic&nbsp;on&nbsp;ros<br>
+:type&nbsp;str:<br>
+:param&nbsp;value:&nbsp;the&nbsp;message&nbsp;to&nbsp;publish<br>
+:type&nbsp;json:<br>
+:return:</span></dd></dl>
+
+<dl><dt><a name="RosClient-subscribe"><strong>subscribe</strong></a>(self, topic, type)</dt><dd><span class="code">subscription&nbsp;to&nbsp;a&nbsp;specific&nbsp;topic<br>
+Update&nbsp;the&nbsp;topics&nbsp;list&nbsp;of&nbsp;the&nbsp;client<br>
+:param&nbsp;self:<br>
+:param&nbsp;topic:&nbsp;the&nbsp;topic&nbsp;on&nbsp;ros<br>
+:type&nbsp;str:<br>
+:param&nbsp;typee:&nbsp;the&nbsp;type&nbsp;of&nbsp;the&nbsp;topic&nbsp;(ros&nbsp;type)<br>
+:type&nbsp;str:<br>
+:return:</span></dd></dl>
+
+<dl><dt><a name="RosClient-unadvertise"><strong>unadvertise</strong></a>(self, topic, type)</dt><dd><span class="code">Declaration&nbsp;of&nbsp;intent&nbsp;to&nbsp;interact&nbsp;on&nbsp;a&nbsp;specific&nbsp;topic&nbsp;on&nbsp;ros<br>
+:param&nbsp;self:<br>
+:param&nbsp;topic:&nbsp;the&nbsp;topic&nbsp;on&nbsp;ros<br>
+:type&nbsp;str:<br>
+:param&nbsp;type:&nbsp;the&nbsp;message&nbsp;to&nbsp;publish<br>
+:type&nbsp;str:<br>
+:return:</span></dd></dl>
+
+<dl><dt><a name="RosClient-unsubscribe"><strong>unsubscribe</strong></a>(self, topic)</dt><dd><span class="code">Unsubscription&nbsp;to&nbsp;a&nbsp;specific&nbsp;topic&nbsp;on&nbsp;ros&nbsp;and&nbsp;remove&nbsp;the&nbsp;information&nbsp;on&nbsp;the&nbsp;topics&nbsp;list<br>
+:param&nbsp;self:<br>
+:param&nbsp;topic:&nbsp;the&nbsp;topic&nbsp;on&nbsp;ros<br>
+:type&nbsp;str:<br>
+:return:</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-main"><strong>main</strong></a>()</dt><dd><span class="code">#&nbsp;main</span></dd></dl>
+</td></tr></table>
+</body></html>

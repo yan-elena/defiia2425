@@ -1,0 +1,15 @@
+/*
+    Demo for communication
+*/
+
+mas demo {
+  agent rc : v3b.asl {
+      focus: room.hvac
+  }
+
+  agent bob
+
+  workspace room {
+      artifact hvac: devices.HVAC(30)
+  }
+}

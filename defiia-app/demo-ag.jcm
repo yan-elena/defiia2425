@@ -1,0 +1,14 @@
+/*
+    Demo of agent implementation
+*/
+
+mas demo {
+
+  agent rc : v1.asl {
+      focus: room.hvac
+  }
+
+  workspace room {
+      artifact hvac: devices.HVAC(30)
+  }
+}
