@@ -27,7 +27,8 @@ class RosClient():
         """list of the topic subscription"""
         self._services = []
         """list of the current service calls (waiting the service response)"""
-        self._messageBox = [] 
+        self._actions = []
+        self._messageBox = []
         """list of the received messages including subscription and service response"""
         self._connected = False
         """status of the connection with the rosbridge"""
@@ -53,9 +54,11 @@ class RosClient():
         """
         while self._services:
             time.sleep(2.0)
+        while self._actions:
+            time.sleep(2.0)
         while self._topics:
             elt = self._topics[0]
-            self.unsubscribe(elt) #unscribe all topics and then discuonect
+            self.unsubscribe(elt)
         self._websocket.close()
 
     def on_listen(self):
@@ -70,19 +73,26 @@ class RosClient():
                 message = json.loads(self._websocket.recv())
                 print('[received]: '+str(message))
                 if 'topic' in message and message['topic'] in self._topics :
-                    self._messageBox.append(message) #if is on the list, i store, if not
+                    self._messageBox.append(message)
                     continue
                 if 'service' in message and message['service'] in self._services :
                     self._messageBox.append(message)
                     self._services.remove(message['service'])
                     continue
+                if 'action' in message :
+                    for elt in self._actions :
+                        if elt['action'] == message['action'] and elt['id'] == message['id']:
+                            self._messageBox.append(message)
+                            if message['op'] == 'action_result' :
+                                print(self._actions)
+                                self._actions.remove({"action": message['action'], "id": message['id']})
+                            continue
             except:
                 break        
 
     def publish(self, topic, value):
         """
-        process to manage subscriptions to receive the messages
-        Update the message box of the client
+        publish a message on the specific topic         
         :param self:
         :param topic: the topic on ros
         :type str:
@@ -136,7 +146,7 @@ class RosClient():
         
     def unadvertise(self, topic, type):     
         """
-        Declaration of intent to interact on a specific topic on ros
+        Declaration of unintent to stop to interact on a specific topic on ros
         :param self:
         :param topic: the topic on ros
         :type str:
@@ -147,9 +157,9 @@ class RosClient():
         message = {"op": "unadvertise", "topic": topic, "type": type}
         self._websocket.send(json.dumps(message))
         
-    def call_service(self, name, args=None): #call services on the other node?
+    def call_service(self, name, args=None):
         """
-        process to manage subscriptions to receive the messages
+        process to call an existing service in ROS environment
         Update the message box of the client
         :param self:
         :param name: the name of the service
@@ -169,7 +179,7 @@ class RosClient():
 
     def getTopics(self):
         """
-        Request a specific API of rosbridge to get the list of existing topics on ROS environment
+        Request the list of existing topics on ROS environment
         :param self:
         :return:
         """
@@ -177,7 +187,7 @@ class RosClient():
 
     def getServices(self):
         """
-        Request a specific API of rosbridge to get the list of existing services on ROS environment
+        Request the list of existing services on ROS environment
         :param self:
         :return:
         """
@@ -185,28 +195,117 @@ class RosClient():
 
     def getNodes(self):
         """
-        Request a specific API of rosbridge to get the list of existing nodes  on ROS environment
+        request the list of existing nodes on ros environment
         :param self:
         :return:
         """
         self.call_service("/rosapi/nodes")
 
-#  (optional) "args": <list<json>>,
-#  (optional) "fragment_size": <int>,
-#  (optional) "compression": <string>
+    def getTopicInfo(self, topic_name):
+        """
+        request more details about a topic
+        :param self:
+	:param topic_name: topic name 
+        :return:
+        """
+        self.call_service("/rosapi/topic_type", args=[topic_name])
+
+    def getServiceInfo(self, service_name):
+        """
+        request more info about a service
+        :param self:
+	:param service_name: service name 
+        :return:
+        """
+        self.call_service("/rosapi/service_type", args=[service_name])
+
+    def getServiceInput(self, service_name):
+        """
+        request information about input type of a service
+        :param self:
+	:param service_name: service name 
+        :return:
+        """
+        self.call_service("/rosapi/service_request_details", args=[service_name])
+
+    def getServiceOutput(self, service_name):
+        """
+        request information about output type of a service
+        :param self:
+	:param service_name: service name 
+        :return:
+        """
+        self.call_service("/rosapi/service_response_details", args=[service_name])
+
+
+    def getMessageInfo(self, message_type):
+        """
+        request details about ROS message type
+        :param self:
+	:param message_type: message type 
+        :return:
+        """
+        self.call_service("/rosapi/message_details", args=[message_name])
+
+    def getNodeDetails(self, node_name):
+        """
+        request information abour publishers and subscribers of a node
+        :param self:
+	    :param node_name: node name 
+        :return:
+        """
+        self.call_service("/rosapi/node_details", args=[node_name])
+
+    def getActionServers(self):
+        """
+        request the list of existing action servers  on ros environment
+        :param self:
+        :return:
+        """
+        self.call_service("/rosapi/action_servers")
+
+    def send_goal(self, action, action_type, action_id, args=None):
+        """
+        send a goal request to an action server
+        :param self:
+        :param action:
+        :param action_type:
+        :param action_id:
+        :return:
+        """
+        #message = {"op": "send_action_goal", "action": "turtlebot3move", "action_type": "simple_action_server/action/Turtlebot3Move", "feedback": True, "args": [1.6, "right"]}
+        message = {"op": "send_action_goal", "action": action, "action_type": action_type, "id": action_id, "feedback": True, "args": args}
+        self._websocket.send(json.dumps(message))
+        self._actions.append({"action": action, "id": action_id}) 
+
+    def cancel_goal(self, action, action_id):
+        """
+        send a cancel request to an action server for a specific action goal
+        :param self:
+        :param action:
+        :param action_id:
+        :return:
+        """
+        #message = {"op": "send_action_goal", "action": "turtlebot3move", "action_type": "simple_action_server/action/Turtlebot3Move", "feedback": True, "args": [1.6, "right"]}
+        message = {"op": "cancel_action_goal", "action": action, "id": action_id}
+        self._websocket.send(json.dumps(message))
 
 # main 
 def main():    
     myclient = RosClient('localhost', 9090) 
     myclient.connect()   
-    myclient.subscribe("/turtle1/cmd_vel", "geometry_msgs/Twist")
-    time.sleep(3) 
-    myclient.publish("/turtle1/cmd_vel", {'linear': {'x': 4.0, 'y': 0.0, 'z': 0.0}, 'angular': {'x': 0.0, 'y': 0.0, 'z': 6.3}})
-    time.sleep(3) 
-    # myclient.getTopics()
+    #myclient.subscribe("/turtle1/cmd_vel", "geometry_msgs/Twist")
+    #time.sleep(3) 
+    #myclient.publish("/turtle1/cmd_vel", {'linear': {'x': 4.0, 'y': 0.0, 'z': 0.0}, 'angular': {'x': 0.0, 'y': 0.0, 'z': 6.3}})
+    myclient.getTopics()
     # myclient.getServices()
-    # myclient.getNodes()
-    myclient.call_service('/turtle1/teleport_absolute', args=[5.0, 10.0, 3.0])
-    
+    # myclient.getServiceInput('turtlesim/SetPen')
+    # myclient.getServiceInfo('/turtle1/set_pen')
+    # myclient.getMessageInfo('geometry_msgs/Twist')
+    # myclient.getNodeDetails('/turtlesim')
+    # myclient.getActionServers()
+    # myclient.call_service('/turtle1/teleport_absolute', args=[5.0, 10.0, 3.0])
+    myclient.disconnect()
+
 if __name__ == '__main__':
     main()
